@@ -57,13 +57,10 @@ def individuals_list(path_to_data):
 
 if __name__ == "__main__":
     # selection of paths to search in (** := search in all subdirectories)
-    paths_list = [
-
-        "\\\\ieu-fsgr.d.uzh.ch\Manser\Shared_Callfiles\meerkats\\y2Annotations_General_combined_converted\\converted_txt_to_audition\\"
-    ]
+    paths_list = []
 
     # individuals' codes list
-    ind_list = individuals_list("selection_dfs\\selected_individuals.csv")
+    ind_list = individuals_list(path_to_data=)
 
     files = []
 
@@ -79,8 +76,7 @@ if __name__ == "__main__":
     for name in files:
 
         # creeates target path (first part is own path, second is part of the original)
-        # in this case I keep from \\CC\\ onwards for the original path
-        target = "C:\\Users\\adelu\\Documents\\UZH\\Thesis\\Shared_CallFiles\\" + \
+        target = "" + \
             "\\".join(name.split("\\")[6:])
 
         copy_files(original_path=name, target_path=target)
