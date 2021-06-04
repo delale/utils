@@ -60,7 +60,7 @@ if __name__ == "__main__":
     paths_list = []
 
     # individuals' codes list
-    ind_list = individuals_list(path_to_data="")
+    ind_list = individuals_list(path_to_data=)
 
     files = []
 
