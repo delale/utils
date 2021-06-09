@@ -60,7 +60,6 @@ def find_files(pattern, search_path):
     file_list = glob.glob(search_path+pattern)
 
     if len(file_list) == 0:
-        print("no file names match the pattern")
         return []
     else:
         return file_list
