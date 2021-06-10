@@ -57,7 +57,7 @@ def find_files(pattern, search_path):
     """
 
     # find file -> list of paths
-    file_list = glob.glob(search_path+pattern)
+    file_list = glob.glob(search_path+pattern, recursive=True)
 
     if len(file_list) == 0:
         return []
