@@ -16,7 +16,18 @@ fyle_name <- str_split(fyle, "\\\\")[[1]][9]
 str_sub(fyle_name, start = -4) <- ""
 
 # metadata df
-meta_dd <- read.csv("meta_test.csv")
+meta_dd <- read.csv(
+    "audio_metadata.csv",
+    stringsAsFactors = FALSE,
+    colClasses = c(
+        "character", "factor", "integer", "numeric", "Date",
+        "character", "character", "factor",
+        "character", "character", "character"
+    )
+)
+
+# avoiding refactoring issue (known R issue)
+#
 
 colnames(annot_dd)[1] <- "Name"
 
@@ -28,9 +39,10 @@ newdd <- data.frame(matrix(nrow = nrow(annot_dd), ncol = ncol(meta_dd)))
 colnames(newdd) <- colnames(meta_dd)
 
 # gather general info
+print(paste("Filename:", fyle_name))
 rec_date <- readline(prompt = "rec date: ")
 rec_date <- as.Date(rec_date, format = "%d/%m/%Y")
-code <- str_split(fyle_name, "_")[[1]][1]
+code <- readline(prompt = "individual code: ")
 source_fyle <- paste(fyle_name, "WAV", sep = ".")
 group_name <- readline(prompt = "Group Name: ")
 bd <- lh %>%
@@ -54,9 +66,9 @@ call_fyle <- c()
 
 for (i in 1:nrow(annot_dd)) {
     if (i < 10) {
-        tmp <- paste(fyle_name, "_0", as.character(i), ".WAV", sep = "")
+        tmp <- paste(fyle_name, "_AD_0", as.character(i), ".WAV", sep = "")
     } else {
-        tmp <- paste(fyle_name, "_", as.character(i), ".WAV", sep = "")
+        tmp <- paste(fyle_name, "_AD_", as.character(i), ".WAV", sep = "")
     }
 
     call_fyle <- append(call_fyle, tmp)
@@ -64,15 +76,15 @@ for (i in 1:nrow(annot_dd)) {
 
 # gathers call type from annotation
 call_type <- apply(annot_dd["Name"], 1, function(x) {
-    str_sub(x, end = 2) <- ""
+    str_sub(x, end = 4) <- ""
     return(x)
 })
 
 newdd["GroupName"] <- rep(group_name, nrow(newdd))
-newdd["Sex"] <- rep(sex, nrow(newdd))
+newdd["Sex"] <- as.factor(rep(sex, nrow(newdd)))
 newdd["RecDate"] <- (rep(rec_date, nrow(newdd)))
 newdd["Code"] <- rep(code, nrow(newdd))
-newdd["ID"] <- rep(id, nrow(newdd))
+newdd["ID"] <- as.factor(rep(id, nrow(newdd)))
 newdd["AgeDays"] <- rep(age_d, nrow(newdd))
 newdd["AgeYears"] <- rep(age_y, nrow(newdd))
 newdd["SourceFile"] <- rep(source_fyle, nrow(newdd))
@@ -81,4 +93,6 @@ newdd["CallType"] <- call_type
 newdd["CallTime"] <- annot_dd["Start"]
 
 meta_dd <- rbind(meta_dd, newdd)
-write.csv(meta_dd, "meta_test.csv", row.names = FALSE)
+write.csv(meta_dd, "audio_metadata.csv", row.names = FALSE)
+
+rm(list = ls())
