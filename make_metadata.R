@@ -10,6 +10,7 @@ fyle <- file.choose()
 
 # annotation df
 annot_dd <- read.delim(fyle, sep = "\t")
+colnames(annot_dd)[1] <- "Name"
 
 # file name
 fyle_name <- str_split(fyle, "\\\\")[[1]][9]
@@ -25,11 +26,6 @@ meta_dd <- read.csv(
         "character", "character", "character"
     )
 )
-
-# avoiding refactoring issue (known R issue)
-#
-
-colnames(annot_dd)[1] <- "Name"
 
 # lifehistory info df
 lh <- read.csv("C:/Users/adelu/Documents/UZH/Thesis/individual_selection/selection_dfs/sel_ind_info.csv")
